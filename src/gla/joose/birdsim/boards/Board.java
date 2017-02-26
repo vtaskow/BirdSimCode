@@ -30,7 +30,7 @@ public abstract class Board extends Observable implements Observer {
 	protected Vector<Piece> allPieces = new Vector<Piece>();
 	private int[] selectedSquare;
 
-	/* user-defined dimensions - from constructor */
+	/* user-defined dimensions of the board - from constructor */
 	private int rows;
 	private int columns;
 
@@ -45,6 +45,7 @@ public abstract class Board extends Observable implements Observer {
 	protected Random rand;
 	protected boolean scareBirds;
 	protected boolean starveBirds;
+	
 	protected int noofbirds;
 	protected int noofgrains;
 
@@ -139,15 +140,17 @@ public abstract class Board extends Observable implements Observer {
 	 * updates the number of birds and grains on the board.
 	 */
 	public void updateStock() {
+		/* lock the pieces so other threads cannot access it */
 		synchronized (allPieces) {
+			/* count the number of birds and grains*/
 			noofbirds = 0;
 			noofgrains = 0;
 			for (int i = 0; i < getAllPieces().size(); i++) {
 				Piece piece = getAllPieces().get(i);
 				if (piece instanceof Grain) {
-					noofgrains = noofgrains + 1;
+					noofgrains++;
 				} else if (piece instanceof Bird) {
-					noofbirds = noofbirds + 1;
+					noofbirds++;
 				}
 			}
 
@@ -182,6 +185,7 @@ public abstract class Board extends Observable implements Observer {
 	}
 
 	public Vector<Piece> getAllPieces() {
+		/* lock pieces, so other threads cannot access it */
 		synchronized (allPieces) {
 			return allPieces;
 		}
