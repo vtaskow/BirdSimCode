@@ -23,11 +23,16 @@ import gla.joose.birdsim.pieces.Piece;
 
 /**
  * A generic board that can be used to display any piece.
+ * Board uses Observer Design Pattern.
  */
 public abstract class Board extends Observable implements Observer {
 	@SuppressWarnings("rawtypes")
+	/* grid made up of ArrayLists of ArrayLists */
 	private Vector[][] board;
+	/* ArrayList to contain all the pieces */
 	protected Vector<Piece> allPieces = new Vector<Piece>();
+	
+	/* [x, y] */
 	private int[] selectedSquare;
 
 	/* user-defined dimensions of the board - from constructor */
@@ -333,6 +338,7 @@ public abstract class Board extends Observable implements Observer {
 		if (piece.getBoard() != null) {
 			throw new IllegalArgumentException("Piece " + piece + " is already on a board");
 		}
+		/* add it to the board and the list of pieces */
 		board[row][column].add(piece);
 		synchronized (allPieces) {
 			allPieces.add(piece);
@@ -474,7 +480,7 @@ public abstract class Board extends Observable implements Observer {
 
 	/**
 	 * Redraws this Board whenever a Piece is modified. This method should
-	 * <b>not</b> be overridden.
+	 * <b>not</b> be overridden./
 	 * 
 	 * @param piece
 	 *            The piece that needs to be redrawn.
@@ -493,7 +499,7 @@ public abstract class Board extends Observable implements Observer {
 	}
 
 	/**
-	 * Paints th1s board itself, not including the pieces.
+	 * Paints this board itself, not including the pieces.
 	 * 
 	 * @param g
 	 *            The Graphics context on which this board is painted.
@@ -507,8 +513,8 @@ public abstract class Board extends Observable implements Observer {
 		Color lineColor = new Color(192, 192, 255);
 
 		// Fill background with solid color
-		g.setColor(backgroundColor);
-		g.fillRect(0, 0, display.getWidth(), display.getHeight());
+		g.setColor(backgroundColor);                     
+		g.fillRect(0, 0, width, height);
 
 		// Paint vertical lines
 		g.setColor(lineColor);
