@@ -17,6 +17,7 @@ import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import flybehaviors.FlyBehavior;
 import gla.joose.birdsim.pieces.Bird;
 import gla.joose.birdsim.pieces.Grain;
 import gla.joose.birdsim.pieces.Piece;
@@ -53,6 +54,8 @@ public abstract class Board extends Observable implements Observer {
 	
 	protected int noofbirds;
 	protected int noofgrains;
+	
+	FlyBehavior flyBehavior;
 
 	/**
 	 * Creates a board with the given number of rows and columns. This board is
@@ -96,6 +99,26 @@ public abstract class Board extends Observable implements Observer {
 			}
 		});
 	}
+	
+	public void setFlyBehavior(FlyBehavior fb) {
+		flyBehavior = fb;
+	}
+	
+	public void performFly() {
+		flyBehavior.fly();
+	}
+	
+	public boolean areScaredBirds() {
+		return scareBirds;
+	}
+
+	public void setScareBirds(boolean scareBirds) {
+		this.scareBirds = scareBirds;
+	}
+
+	public Random getRand() {
+		return rand;
+	}
 
 	/**
 	 * Configures a board with specific set of behaviour; must be implemented by
@@ -112,34 +135,6 @@ public abstract class Board extends Observable implements Observer {
 	 * 
 	 */
 	public abstract void updateStockDisplay();
-
-	/**
-	 * Generic bird behaviour for any concrete board. This class is overridden
-	 * when a different board behaviour is preferred
-	 * 
-	 */
-	public void fly() {
-
-		Bird bird = new Bird();
-
-		int randRow = rand.nextInt((getRows() - 3) + 1) + 0;
-		int randCol = rand.nextInt((getColumns() - 3) + 1) + 0;
-
-		place(bird, randRow, randCol);
-		bird.setDraggable(false);
-		bird.setSpeed(20);
-		updateStockDisplay();
-
-		while (!scareBirds) {
-			randRow = rand.nextInt((getRows() - 3) + 1) + 0;
-			randCol = rand.nextInt((getColumns() - 3) + 1) + 0;
-			bird.moveTo(randRow, randCol);
-			bird.setSpeed(20);
-
-		}
-		bird.remove();
-		updateStockDisplay();
-	}
 
 	/**
 	 * updates the number of birds and grains on the board.
