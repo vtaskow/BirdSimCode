@@ -86,7 +86,6 @@ public class StaticForageBoard extends Board {
 		starveBirdsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				starveBirds = true;
-
 			}
 		});
 
@@ -95,7 +94,6 @@ public class StaticForageBoard extends Board {
 		scareBirdsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scareBirds = true;
-
 			}
 		});
 		

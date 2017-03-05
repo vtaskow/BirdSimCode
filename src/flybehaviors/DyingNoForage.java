@@ -1,12 +1,14 @@
 package flybehaviors;
 
+import java.awt.Color;
+
 import gla.joose.birdsim.boards.Board;
 import gla.joose.birdsim.pieces.Bird;
 
-public class NoForage implements FlyBehavior {
+public class DyingNoForage implements FlyBehavior {
 	private Board board;
 
-	public NoForage(Board board){
+	public DyingNoForage(Board board){
 		this.board = board;
 	}
 	
@@ -18,7 +20,7 @@ public class NoForage implements FlyBehavior {
 	@Override
 	public void fly() {
 
-		Bird bird = new Bird();
+		Bird bird = new Bird(Color.orange);
 
 		int randRow = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;
 		int randCol = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;
@@ -28,12 +30,14 @@ public class NoForage implements FlyBehavior {
 		bird.setSpeed(20);
 		board.updateStockDisplay();
 
-		while (!board.areScaredBirds()) {
+		Integer timer = new Integer(10);
+		
+		while (!board.areScaredBirds() && timer >= 0) {
 			randRow = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;
 			randCol = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;
 			bird.moveTo(randRow, randCol);
 			bird.setSpeed(20);
-
+			timer--;
 		}
 		bird.remove();
 		board.updateStockDisplay();

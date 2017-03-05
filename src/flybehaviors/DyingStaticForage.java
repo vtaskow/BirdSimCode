@@ -3,42 +3,44 @@ package flybehaviors;
 import java.awt.Color;
 
 import gla.joose.birdsim.boards.Board;
-import gla.joose.birdsim.pieces.Bird;
-import gla.joose.birdsim.pieces.Grain;
-import gla.joose.birdsim.pieces.Piece;
+import gla.joose.birdsim.pieces.*;
 import gla.joose.birdsim.util.Distance;
 import gla.joose.birdsim.util.DistanceMgr;
 
-public class MovingForage implements FlyBehavior {
-	
+public class DyingStaticForage implements FlyBehavior {
+
 	private Board board;
 	
-	public MovingForage(Board board){
+	public DyingStaticForage(Board board){
 		this.board = board;
 	}
 	
 	@Override
 	public void fly() {
-
-		Bird bird = new Bird(Color.BLUE);
-
+		
+		Bird bird = new Bird(Color.PINK);
+		
 		int randRow = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;
-		int randCol = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;
+		int randCol = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;/* add the bird to the board and the list of pieces which is in the Board class */
 		board.place(bird, randRow, randCol);
 		bird.setDraggable(false);
 		bird.setSpeed(20);
 		board.updateStockDisplay();
-
+		
+		Integer timer = new Integer(10);
+		
 		while (!board.areScaredBirds()) {
-
+			
 			DistanceMgr dmgr = new DistanceMgr();
 			int current_row = bird.getRow();
 			int current_col = bird.getColumn();
 
 			synchronized (board.allPieces) {
+				int grains = 0;
 				for (int i = 0; i < board.getAllPieces().size(); i++) {
 					Piece piece = board.getAllPieces().get(i);
 					if (piece instanceof Grain) {
+						grains++;
 						int dist_from_food_row = current_row - piece.getRow();
 						int dist_from_food_col = piece.getColumn() - current_col;
 						Distance d = null;
@@ -50,6 +52,12 @@ public class MovingForage implements FlyBehavior {
 						dmgr.addDistance(d);
 					}
 				}
+				if (grains < 1) {
+					timer--;
+				}
+			}
+			if (timer < 0) {
+				break;
 			}
 
 			Distance distances[] = dmgr.getDistances();
@@ -94,11 +102,6 @@ public class MovingForage implements FlyBehavior {
 							Grain grain = (Grain) d.getTargetpiece();
 							grain.deplete();
 
-							int randRowf = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;
-							int randColf = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;
-							grain.moveTo(randRowf, randColf);
-							grain.setSpeed(10);
-							
 							if (board.areStarvedBirds()) {
 								grain.remove();
 								board.updateStockDisplay();
@@ -145,7 +148,7 @@ public class MovingForage implements FlyBehavior {
 							}
 
 						} else if (d.getRowDist() < 0) {
-							boolean can_move_down = bird.canMoveTo(current_row + 1, current_col);/// kkkk
+							boolean can_move_down = bird.canMoveTo(current_row + 1, current_col);
 							if (can_move_down) {
 								bird.moveTo(current_row + 1, current_col);
 								movedone = true;
@@ -155,11 +158,6 @@ public class MovingForage implements FlyBehavior {
 							// bingo -food found (eat and move away)
 							Grain grain = (Grain) d.getTargetpiece();
 							grain.deplete();
-
-							int randRowf = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;
-							int randColf = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;
-							grain.moveTo(randRowf, randColf);
-							grain.setSpeed(10);
 
 							if (board.areStarvedBirds()) {
 								grain.remove();
@@ -175,7 +173,6 @@ public class MovingForage implements FlyBehavior {
 							bird.setSpeed(20);
 							movedone = true;
 							break;
-
 						}
 					}
 				}
@@ -189,7 +186,5 @@ public class MovingForage implements FlyBehavior {
 		}
 		bird.remove();
 		board.updateStockDisplay();
-
 	}
-	
 }

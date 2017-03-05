@@ -1,7 +1,5 @@
 package flybehaviors;
 
-import java.util.Arrays;
-
 import gla.joose.birdsim.boards.Board;
 import gla.joose.birdsim.pieces.Bird;
 import gla.joose.birdsim.pieces.Grain;
@@ -28,8 +26,6 @@ public class StaticForage implements FlyBehavior {
 		bird.setDraggable(false);
 		bird.setSpeed(20);
 		board.updateStockDisplay();
-
-		Integer timer = new Integer(10);
 		
 		while (!board.areScaredBirds()) {
 			
@@ -38,11 +34,9 @@ public class StaticForage implements FlyBehavior {
 			int current_col = bird.getColumn();
 
 			synchronized (board.allPieces) {
-				int grains = 0;
 				for (int i = 0; i < board.getAllPieces().size(); i++) {
 					Piece piece = board.getAllPieces().get(i);
 					if (piece instanceof Grain) {
-						grains++;
 						int dist_from_food_row = current_row - piece.getRow();
 						int dist_from_food_col = piece.getColumn() - current_col;
 						Distance d = null;
@@ -54,16 +48,7 @@ public class StaticForage implements FlyBehavior {
 						dmgr.addDistance(d);
 					}
 				}
-				if (grains < 1) {
-					timer--;
-				}
-				System.out.println("GRAINS : " + grains);
 			}
-			System.out.println(timer);
-			if (timer < 0) {
-				break;
-			}
-			////
 
 			Distance distances[] = dmgr.getDistances();
 			boolean movedone = false;
@@ -106,9 +91,6 @@ public class StaticForage implements FlyBehavior {
 							// bingo -food found (eat and move away)
 							Grain grain = (Grain) d.getTargetpiece();
 							grain.deplete();
-							timer++;
-							board.createThread();
-							
 
 							if (board.areStarvedBirds()) {
 								grain.remove();
@@ -117,6 +99,7 @@ public class StaticForage implements FlyBehavior {
 								grain.remove();
 								board.updateStockDisplay();
 							}
+							
 							int randRow1 = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;
 							int randCol2 = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;
 							bird.moveTo(randRow1, randCol2);
@@ -165,8 +148,6 @@ public class StaticForage implements FlyBehavior {
 							// bingo -food found (eat and move away)
 							Grain grain = (Grain) d.getTargetpiece();
 							grain.deplete();
-							timer++;
-							board.createThread();
 
 							if (board.areStarvedBirds()) {
 								grain.remove();
@@ -175,13 +156,13 @@ public class StaticForage implements FlyBehavior {
 								grain.remove();
 								board.updateStockDisplay();
 							}
+							
 							int randRow1 = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;
 							int randCol2 = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;
 							bird.moveTo(randRow1, randCol2);
 							bird.setSpeed(20);
 							movedone = true;
 							break;
-
 						}
 					}
 				}
@@ -195,6 +176,5 @@ public class StaticForage implements FlyBehavior {
 		}
 		bird.remove();
 		board.updateStockDisplay();
-
 	}
 }

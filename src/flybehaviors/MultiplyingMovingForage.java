@@ -9,18 +9,17 @@ import gla.joose.birdsim.pieces.Piece;
 import gla.joose.birdsim.util.Distance;
 import gla.joose.birdsim.util.DistanceMgr;
 
-public class MovingForage implements FlyBehavior {
-	
+public class MultiplyingMovingForage implements FlyBehavior {
 	private Board board;
 	
-	public MovingForage(Board board){
+	public MultiplyingMovingForage(Board board){
 		this.board = board;
 	}
 	
 	@Override
 	public void fly() {
 
-		Bird bird = new Bird(Color.BLUE);
+		Bird bird = new Bird(Color.MAGENTA);
 
 		int randRow = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;
 		int randCol = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;
@@ -51,6 +50,7 @@ public class MovingForage implements FlyBehavior {
 					}
 				}
 			}
+			////
 
 			Distance distances[] = dmgr.getDistances();
 			boolean movedone = false;
@@ -93,6 +93,7 @@ public class MovingForage implements FlyBehavior {
 							// bingo -food found (eat and move away)
 							Grain grain = (Grain) d.getTargetpiece();
 							grain.deplete();
+							board.createThread();
 
 							int randRowf = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;
 							int randColf = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;
@@ -155,6 +156,7 @@ public class MovingForage implements FlyBehavior {
 							// bingo -food found (eat and move away)
 							Grain grain = (Grain) d.getTargetpiece();
 							grain.deplete();
+							board.createThread();
 
 							int randRowf = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;
 							int randColf = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;
@@ -175,7 +177,6 @@ public class MovingForage implements FlyBehavior {
 							bird.setSpeed(20);
 							movedone = true;
 							break;
-
 						}
 					}
 				}
@@ -185,11 +186,9 @@ public class MovingForage implements FlyBehavior {
 				int randCol2 = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;
 				bird.moveTo(randRow1, randCol2);
 			}
-
 		}
 		bird.remove();
 		board.updateStockDisplay();
-
 	}
 	
 }

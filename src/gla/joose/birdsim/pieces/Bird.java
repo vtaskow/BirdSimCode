@@ -23,7 +23,7 @@ public class Bird extends Piece {
      * 
      * @param color The <code>Color</code> of the new piece.
      **/
-     Bird(Color color) {
+    public Bird(Color color) {
         this.color = color;
     }
     

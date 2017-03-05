@@ -2,13 +2,8 @@ package gla.joose.birdsim;
 
 import javax.swing.JFrame;
 
-import flybehaviors.NoForage;
-import flybehaviors.StaticForage;
-import flybehaviors.MovingForage;
-import gla.joose.birdsim.boards.Board;
-import gla.joose.birdsim.boards.FlockBoard;
-import gla.joose.birdsim.boards.MovingForageBoard;
-import gla.joose.birdsim.boards.StaticForageBoard;
+import flybehaviors.*;
+import gla.joose.birdsim.boards.*;
 
 /**
  * @author inah The main method for bootstrapping BirdSim.
@@ -20,16 +15,28 @@ public class Play extends JFrame {
 		/* create a window for the game */
 		Play play = new Play();
 
-		//Board forageBoard = new StaticForageBoard(50,50);
-		//forageBoard.initBoard(play);
-//		forageBoard.setFlyBehavior(new NoForage(forageBoard));
-//		forageBoard.initBoard(play);
-		Board forageBoard = new MovingForageBoard(50, 50);
-		//forageBoard.setFlyBehavior(new NoForage(forageBoard));
+		/*Board forageBoard = new StaticForageBoard(50,50);
 		forageBoard.initBoard(play);
-//		forageBoard.setFlyBehavior(new StaticForage(forageBoard));
-		//Board simpleBoard = new FlockBoard(10, 20);
-		//simpleBoard.initBoard(play);
+		forageBoard.setFlyBehavior(new DyingNoForage(forageBoard));
+		forageBoard.initBoard(play);*/
+		
+		/*Board forageBoard = new MovingForageBoard(50, 50);
+		forageBoard.setFlyBehavior(new DyingNoForage(forageBoard));
+		forageBoard.initBoard(play);
+		forageBoard.setFlyBehavior(new StaticForage(forageBoard));*/
+		
+		/*Board simpleBoard = new FlockBoard(10, 20);
+		simpleBoard.setFlyBehavior(new DyingMultiplyingMovingForage(simpleBoard));
+		simpleBoard.initBoard(play);*/
+		
+		Board forageBoard = new StaticForageBoard(50, 50);
+		forageBoard.setFlyBehavior(new DyingStaticForage(forageBoard));
+		//forageBoard.setFlyBehavior(new DyingMultiplyingMovingForage(forageBoard));
+		forageBoard.initBoard(play);
+		
+		//Board forageBoard = new MovingForageBoard(50, 50);
+		//forageBoard.setFlyBehavior(new MultiplyingMovingForage(forageBoard));
+		//forageBoard.initBoard(play);
 
 	}
 
