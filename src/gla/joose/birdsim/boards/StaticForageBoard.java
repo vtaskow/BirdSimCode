@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import flybehaviors.NoForage;
+import flybehaviors.StaticForage;
 import gla.joose.birdsim.pieces.Bird;
 import gla.joose.birdsim.pieces.Grain;
 import gla.joose.birdsim.pieces.Piece;
@@ -30,7 +32,6 @@ public class StaticForageBoard extends Board {
 
 	/* button and check for scaring birds */
 	JButton scareBirdsButton;
-	boolean scareBirds;
 
 	/* button for starving and checking birds */
 	JButton starveBirdsButton;
@@ -41,9 +42,10 @@ public class StaticForageBoard extends Board {
 	JLabel noOfBirdsLabel;
 
 	Thread runningthread;
-
+	
 	public StaticForageBoard(int rows, int columns) {
 		super(rows, columns);
+		flyBehavior = new StaticForage(this);
 	}
 
 	@Override
@@ -62,7 +64,7 @@ public class StaticForageBoard extends Board {
 				scareBirds = false;
 				runningthread = new Thread(new Runnable() {
 					public void run() {
-						fly();
+						flyBehavior.fly();
 					}
 				});
 				runningthread.start();
@@ -73,7 +75,7 @@ public class StaticForageBoard extends Board {
 		buttonPanel.add(feedBirdButton);
 		feedBirdButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				starveBirdspressed = false;
+				starveBirds = false;
 
 				Grain grain = new Grain();
 				int randRow = rand.nextInt((getRows() - 3) + 1) + 0;
@@ -89,7 +91,7 @@ public class StaticForageBoard extends Board {
 		buttonPanel.add(starveBirdsButton);
 		starveBirdsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				starveBirdspressed = true;
+				starveBirds = true;
 
 			}
 		});
@@ -102,6 +104,7 @@ public class StaticForageBoard extends Board {
 
 			}
 		});
+		
 		noOfBirdsLabel = new JLabel();
 		noOfBirdsLabel.setText("#birds: " + 0);
 		buttonPanel.add(noOfBirdsLabel);
@@ -138,175 +141,6 @@ public class StaticForageBoard extends Board {
 		updateStock();
 		noOfBirdsLabel.setText("#birds: " + noofbirds);
 		noOfGrainsLabel.setText("#grains: " + noofgrains);
-	}
-
-	@Override
-	public void fly() {
-		/* create a new bird */
-		Bird bird = new Bird();
-		
-		/* get random position and place it there */
-		int randRow = rand.nextInt((getRows() - 3) + 1) + 0;
-		int randCol = rand.nextInt((getColumns() - 3) + 1) + 0;
-		/* add the bird to the board and the list of pieces which is in the Board class */
-		place(bird, randRow, randCol);
-		bird.setDraggable(false);
-		bird.setSpeed(20);
-		updateStockDisplay();
-
-		/* while the scare button has not been clicked */
-		while (!scareBirds) {
-			
-			DistanceMgr dmgr = new DistanceMgr();
-			int current_row = bird.getRow();
-			int current_col = bird.getColumn();
-
-			synchronized (allPieces) {
-				for (int i = 0; i < getAllPieces().size(); i++) {
-					Piece piece = getAllPieces().get(i);
-					if (piece instanceof Grain) {
-
-						int dist_from_food_row = current_row - piece.getRow();
-						int dist_from_food_col = piece.getColumn() - current_col;
-						Distance d = null;
-						if (dist_from_food_row <= dist_from_food_col) {
-							d = new Distance(bird, (Grain) piece, dist_from_food_row, dist_from_food_col);
-						} else {
-							d = new Distance(bird, (Grain) piece, dist_from_food_row, dist_from_food_col);
-						}
-						dmgr.addDistance(d);
-
-					}
-				}
-			}
-			////
-
-			Distance distances[] = dmgr.getDistances();
-			boolean movedone = false;
-
-			for (int i = 0; i < distances.length; i++) {
-				Distance d = distances[i];
-
-				if (d.getRowDist() <= d.getColDist()) {
-
-					if (d.getRowDist() > 0) {
-						boolean can_move_down = bird.canMoveTo(current_row - 1, current_col);
-						if (can_move_down) {
-							bird.moveTo(current_row - 1, current_col);
-							movedone = true;
-							break;
-						}
-					} else if (d.getRowDist() < 0) {
-						boolean can_move_down = bird.canMoveTo(current_row + 1, current_col);
-						if (can_move_down) {
-							bird.moveTo(current_row + 1, current_col);
-							movedone = true;
-							break;
-						}
-					} else if (d.getRowDist() == 0) {
-						if (d.getColDist() > 0) {
-							boolean can_move_right = bird.canMoveTo(current_row, current_col + 1);
-							if (can_move_right) {
-								bird.moveTo(current_row, current_col + 1);
-								movedone = true;
-								break;
-							}
-						} else if (d.getColDist() < 0) {
-							boolean can_move_left = bird.canMoveTo(current_row, current_col - 1);
-							if (can_move_left) {
-								bird.moveTo(current_row, current_col - 1);
-								movedone = true;
-								break;
-							}
-						} else if (d.getColDist() == 0) {
-							// bingo -food found (eat and move away)
-							Grain grain = (Grain) d.getTargetpiece();
-							grain.deplete();
-
-							if (starveBirdspressed) {
-								grain.remove();
-								updateStockDisplay();
-							} else if (grain.getRemaining() <= 0) {
-								grain.remove();
-								updateStockDisplay();
-							}
-							int randRow1 = rand.nextInt((getRows() - 3) + 1) + 0;
-							int randCol2 = rand.nextInt((getColumns() - 3) + 1) + 0;
-							bird.moveTo(randRow1, randCol2);
-							bird.setSpeed(20);
-							movedone = true;
-							break;
-
-						}
-
-					}
-				}
-				///////
-				else if (d.getRowDist() > d.getColDist()) {
-
-					if (d.getColDist() > 0) {
-						boolean can_move_right = bird.canMoveTo(current_row, current_col + 1);
-						if (can_move_right) {
-							bird.moveTo(current_row, current_col + 1);
-							movedone = true;
-							break;
-						}
-					} else if (d.getColDist() < 0) {
-						boolean can_move_left = bird.canMoveTo(current_row, current_col - 1);
-						if (can_move_left) {
-							bird.moveTo(current_row, current_col - 1);
-							movedone = true;
-							break;
-						}
-					} else if (d.getColDist() == 0) {
-						if (d.getRowDist() > 0) {
-							boolean can_move_up = bird.canMoveTo(current_row - 1, current_col);
-							if (can_move_up) {
-								bird.moveTo(current_row - 1, current_col);
-								movedone = true;
-								break;
-							}
-
-						} else if (d.getRowDist() < 0) {
-							boolean can_move_down = bird.canMoveTo(current_row + 1, current_col);
-							if (can_move_down) {
-								bird.moveTo(current_row + 1, current_col);
-								movedone = true;
-								break;
-							}
-						} else if (d.getRowDist() == 0) {
-							// bingo -food found (eat and move away)
-							Grain grain = (Grain) d.getTargetpiece();
-							grain.deplete();
-
-							if (starveBirdspressed) {
-								grain.remove();
-								updateStockDisplay();
-							} else if (grain.getRemaining() <= 0) {
-								grain.remove();
-								updateStockDisplay();
-							}
-							int randRow1 = rand.nextInt((getRows() - 3) + 1) + 0;
-							int randCol2 = rand.nextInt((getColumns() - 3) + 1) + 0;
-							bird.moveTo(randRow1, randCol2);
-							bird.setSpeed(20);
-							movedone = true;
-							break;
-
-						}
-					}
-				}
-			}
-			if (!movedone) {
-				int randRow1 = rand.nextInt((getRows() - 3) + 1) + 0;
-				int randCol2 = rand.nextInt((getColumns() - 3) + 1) + 0;
-				bird.moveTo(randRow1, randCol2);
-			}
-
-		}
-		bird.remove();
-		updateStockDisplay();
-
 	}
 
 }

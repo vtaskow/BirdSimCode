@@ -8,7 +8,6 @@ import gla.joose.birdsim.pieces.Bird;
 public class NoForage implements FlyBehavior {
 	private Board board;
 
-	
 	public NoForage(Board board){
 		this.board = board;
 	}

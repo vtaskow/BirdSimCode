@@ -31,7 +31,7 @@ public abstract class Board extends Observable implements Observer {
 	/* grid made up of ArrayLists of ArrayLists */
 	private Vector[][] board;
 	/* ArrayList to contain all the pieces */
-	protected Vector<Piece> allPieces = new Vector<Piece>();
+	public Vector<Piece> allPieces = new Vector<Piece>();
 	
 	/* [x, y] */
 	private int[] selectedSquare;
@@ -51,7 +51,7 @@ public abstract class Board extends Observable implements Observer {
 	protected Random rand;
 	protected boolean scareBirds;
 	protected boolean starveBirds;
-	
+
 	protected int noofbirds;
 	protected int noofgrains;
 	
@@ -118,6 +118,10 @@ public abstract class Board extends Observable implements Observer {
 
 	public Random getRand() {
 		return rand;
+	}
+	
+	public boolean areStarvedBirds() {
+		return starveBirds;
 	}
 
 	/**

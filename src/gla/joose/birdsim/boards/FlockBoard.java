@@ -53,9 +53,7 @@ public class FlockBoard extends Board {
 				scareBirds = false;
 				runningthread = new Thread(new Runnable() {
 					public void run() {
-						flyBehavior.fly();
-						System.out.println("Created a new thread");
-						
+						flyBehavior.fly();						
 					}
 				});
 				runningthread.start();

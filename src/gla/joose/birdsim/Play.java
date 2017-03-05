@@ -17,12 +17,12 @@ public class Play extends JFrame {
 		/* create a window for the game */
 		Play play = new Play();
 
-		// Board forageBoard = new StaticForageBoard(50,50);
-		// forageBoard.initBoard(play);
+		Board forageBoard = new StaticForageBoard(50,50);
+		forageBoard.initBoard(play);
 		// Board forageBoard = new MovingForageBoard(10, 10);
 		// forageBoard.initBoard(play);
-		Board simpleBoard = new FlockBoard(10, 20);
-		simpleBoard.initBoard(play);
+		//Board simpleBoard = new FlockBoard(10, 20);
+		//simpleBoard.initBoard(play);
 
 	}
 
