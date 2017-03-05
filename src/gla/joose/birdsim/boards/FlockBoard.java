@@ -28,7 +28,7 @@ public class FlockBoard extends Board {
 	JLabel noOfBirdsLabel;
 
 	/* not a fucking clue why this is here */
-	Thread runningthread;
+	//Thread runningthread;
 
 	/* set board's dimensions */
 	public FlockBoard(int rows, int columns) {
@@ -50,13 +50,7 @@ public class FlockBoard extends Board {
 		buttonPanel.add(hatchEggButton);
 		hatchEggButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scareBirds = false;
-				runningthread = new Thread(new Runnable() {
-					public void run() {
-						flyBehavior.fly();						
-					}
-				});
-				runningthread.start();
+				createThread();
 			}
 		});
 
@@ -77,10 +71,10 @@ public class FlockBoard extends Board {
 			public void windowClosing(WindowEvent e) {
 				// used to invoke birds removal from the board
 				scareBirds = true;
-				if (runningthread != null) {
+				if (runningThread != null) {
 					clear();
 					try {
-						runningthread.join();
+						runningThread.join();
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}
@@ -95,7 +89,7 @@ public class FlockBoard extends Board {
 		frame.setVisible(true);
 
 	}
-
+	
 	@Override
 	public void updateStockDisplay() {
 		updateStock();

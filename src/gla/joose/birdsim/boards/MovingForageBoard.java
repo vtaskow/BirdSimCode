@@ -12,12 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import flybehaviors.MovingForage;
-import flybehaviors.NoForage;
-import gla.joose.birdsim.pieces.Bird;
 import gla.joose.birdsim.pieces.Grain;
-import gla.joose.birdsim.pieces.Piece;
-import gla.joose.birdsim.util.Distance;
-import gla.joose.birdsim.util.DistanceMgr;
 
 /**
  * A BirdSim board with where birds simultaneously fly and perch on moving
@@ -34,7 +29,7 @@ public class MovingForageBoard extends Board {
 	JLabel noOfGrainsLabel;
 	JLabel noOfBirdsLabel;
 
-	Thread runningthread;
+	//Thread runningthread;
 
 	public MovingForageBoard(int rows, int columns) {
 		super(rows, columns);
@@ -54,13 +49,7 @@ public class MovingForageBoard extends Board {
 		buttonPanel.add(hatchEggButton);
 		hatchEggButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scareBirds = false;
-				runningthread = new Thread(new Runnable() {
-					public void run() {
-						flyBehavior.fly();
-					}
-				});
-				runningthread.start();
+				createThread();
 			}
 		});
 
@@ -110,10 +99,10 @@ public class MovingForageBoard extends Board {
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				scareBirds = true;
-				if (runningthread != null) {
+				if (runningThread != null) {
 					clear();
 					try {
-						runningthread.join();
+						runningThread.join();
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}

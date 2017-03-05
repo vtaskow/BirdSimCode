@@ -1,4 +1,0 @@
-ERROR - 21:45:05: java.net.MalformedURLException: unknown protocol: pathmap
-WARNING - 21:46:25: Convert BirdSimCode
-ERROR - 21:46:25: org.xml.sax.SAXParseExceptionpublicId: /BirdSimCode/src/gla/joose/birdsim/pieces/Bird.java; systemId: file:///BirdSimCode/src/gla/joose/birdsim/pieces/Bird.java; lineNumber: 1; columnNumber: 1; Content is not allowed in prolog.
-ERROR - 21:46:25: org.xml.sax.SAXParseExceptionpublicId: /BirdSimCode/src/gla/joose/birdsim/pieces/Bird.java; systemId: file:///BirdSimCode/src/gla/joose/birdsim/pieces/Bird.java; lineNumber: 1; columnNumber: 1; Content is not allowed in prolog.

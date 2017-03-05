@@ -56,7 +56,9 @@ public abstract class Board extends Observable implements Observer {
 	protected int noofgrains;
 	
 	FlyBehavior flyBehavior;
-
+	
+	Thread runningThread;
+	
 	/**
 	 * Creates a board with the given number of rows and columns. This board is
 	 * a Swing <code>JPanel</code> and may be used wherever a
@@ -122,6 +124,16 @@ public abstract class Board extends Observable implements Observer {
 	
 	public boolean areStarvedBirds() {
 		return starveBirds;
+	}
+	
+	public void createThread() {
+		scareBirds = false;
+		runningThread = new Thread(new Runnable() {
+			public void run() {
+				performFly();						
+			}
+		});
+		runningThread.start();
 	}
 
 	/**

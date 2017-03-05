@@ -41,7 +41,7 @@ public class StaticForageBoard extends Board {
 	JLabel noOfGrainsLabel;
 	JLabel noOfBirdsLabel;
 
-	Thread runningthread;
+	//Thread runningthread;
 	
 	public StaticForageBoard(int rows, int columns) {
 		super(rows, columns);
@@ -61,13 +61,7 @@ public class StaticForageBoard extends Board {
 		buttonPanel.add(hatchEggButton);
 		hatchEggButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scareBirds = false;
-				runningthread = new Thread(new Runnable() {
-					public void run() {
-						flyBehavior.fly();
-					}
-				});
-				runningthread.start();
+				createThread();
 			}
 		});
 
@@ -117,10 +111,10 @@ public class StaticForageBoard extends Board {
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				scareBirds = true;
-				if (runningthread != null) {
+				if (runningThread != null) {
 					clear();
 					try {
-						runningthread.join();
+						runningThread.join();
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}

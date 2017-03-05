@@ -15,7 +15,7 @@ public class Bird extends Piece {
      * Hatches a <code>Bird</code>.
      **/
     public Bird() {
-    	color = Color.BLACK;
+    	color = Color.GREEN;
     }
     
     /**

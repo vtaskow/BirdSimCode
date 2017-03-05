@@ -26,6 +26,8 @@ public class MovingForage implements FlyBehavior {
 		bird.setDraggable(false);
 		bird.setSpeed(20);
 		board.updateStockDisplay();
+		
+		Integer timer = new Integer(10);
 
 		while (!board.areScaredBirds()) {
 
@@ -34,10 +36,11 @@ public class MovingForage implements FlyBehavior {
 			int current_col = bird.getColumn();
 
 			synchronized (board.allPieces) {
+				int grains = 0;
 				for (int i = 0; i < board.getAllPieces().size(); i++) {
 					Piece piece = board.getAllPieces().get(i);
 					if (piece instanceof Grain) {
-
+						grains++;
 						int dist_from_food_row = current_row - piece.getRow();
 						int dist_from_food_col = piece.getColumn() - current_col;
 						Distance d = null;
@@ -50,6 +53,14 @@ public class MovingForage implements FlyBehavior {
 
 					}
 				}
+				if (grains < 1) {
+					timer--;
+				}
+				System.out.println("GRAINS : " + grains);
+			}
+			System.out.println(timer);
+			if (timer < 0) {
+				break;
 			}
 			////
 
@@ -94,6 +105,8 @@ public class MovingForage implements FlyBehavior {
 							// bingo -food found (eat and move away)
 							Grain grain = (Grain) d.getTargetpiece();
 							grain.deplete();
+							timer++;
+							board.createThread();
 
 							int randRowf = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;
 							int randColf = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;
@@ -155,6 +168,8 @@ public class MovingForage implements FlyBehavior {
 							// bingo -food found (eat and move away)
 							Grain grain = (Grain) d.getTargetpiece();
 							grain.deplete();
+							timer++;
+							board.createThread();
 
 							int randRowf = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;
 							int randColf = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;
