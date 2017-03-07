@@ -27,8 +27,9 @@ public class StartupWindow extends JFrame implements ActionListener {
 	private JLabel chooseFlying;
 	private JButton sendButton;
 
-	private int menuSelectedBoard = 0;
-	private int menuSelectedBehavior = 0;
+	/* set to one in case the user decides not to change either one of the options of the combo boxes*/
+	private int menuSelectedBoard = 1;
+	private int menuSelectedBehavior = 1;
 
 	private Play play;
 
@@ -109,6 +110,8 @@ public class StartupWindow extends JFrame implements ActionListener {
 			play.setSelectedBoard(menuSelectedBoard);
 			play.setSelectedBehavior(menuSelectedBehavior);
 			play.setSelected(true);
+			System.out.println(menuSelectedBehavior);
+			System.out.println(menuSelectedBoard);
 			dispose();
 		}
 	}
