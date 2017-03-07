@@ -1,5 +1,6 @@
 package gla.joose.birdsim;
 
+import java.awt.geom.Area;
 import java.util.Scanner;
 import javax.swing.JFrame;
 import flybehaviors.*;
@@ -100,13 +101,29 @@ public class Play extends JFrame {
 
 	private int selectedBoard;
 	
-	public void getSelectedBoardMenu(StartupWindow sw) {
-		selectedBoard = sw.getSelectedBoard();
-	}
-	private int selectedBehavior;
 	
-	public void getSelectedBehaviorMenu(StartupWindow sw){
-		selectedBehavior = sw.getSelectedBehavior();
+	private int selectedBehavior;
+
+	public int getSelectedBoard() {
+		return selectedBoard;
+	}
+
+	public void setSelectedBoard(int selectedBoard) {
+		this.selectedBoard = selectedBoard;
+	}
+
+	public int getSelectedBehavior() {
+		return selectedBehavior;
+	}
+
+	public void setSelectedBehavior(int selectedBehavior) {
+		this.selectedBehavior = selectedBehavior;
+	}
+
+	private boolean areSelected = false;
+	
+	public void setSelected(boolean value){
+		areSelected = value;
 	}
 
 	public static void main(String[] args) {
@@ -115,12 +132,20 @@ public class Play extends JFrame {
 		
 		StartupWindow sw = new StartupWindow(play);
 		sw.setVisible(true);
+		
+		while(!play.areSelected){
+			System.out.println("adasdas");
+		}
+		System.out.println("OUT");
+		/*StartupWindow sw = new StartupWindow(play);
+		sw.setVisible(true);*/
 
 		//Scanner input = new Scanner(System.in);
+
 		/* choose the board type */
-		Board generalBoard = chooseBoard(play.selectedBoard);
+		Board generalBoard = chooseBoard(play.getSelectedBoard());
 		/* choose the birds' behavior */
-		chooseBehaviour(generalBoard, play.selectedBehavior);
+		chooseBehaviour(generalBoard, play.getSelectedBehavior());
 		/* close scanner, it is not needed anymore */
 		//input.close();
 

@@ -29,8 +29,8 @@ public class StartupWindow extends JFrame implements ActionListener {
 	private JLabel chooseFlying;
 	private JButton sendButton;
 
-	private int selectedBoard = 0;
-	private int selectedBehavior = 0;
+	private int menuSelectedBoard = 0;
+	private int menuSelectedBehavior = 0;
 	
 	private Play play;
 	
@@ -101,28 +101,20 @@ public class StartupWindow extends JFrame implements ActionListener {
 		Object source = e.getSource();
 
 		if (source == boardsBox) {
-			selectedBoard = boardsBox.getSelectedIndex() + 1;
+			menuSelectedBoard = boardsBox.getSelectedIndex() + 1;
 			//String boardName = (String) boardsBox.getSelectedItem();
 			//System.out.println(boardName);
 		} else if (source == behaviorsBox) {
-			selectedBehavior = behaviorsBox.getSelectedIndex() + 1;
+			menuSelectedBehavior = behaviorsBox.getSelectedIndex() + 1;
 			//String behaviorName = (String) behaviorsBox.getSelectedItem();
 			//System.out.println(behaviorName);
 		} else if (source == sendButton) {
 			System.out.println("Sending info...");
-			play.getSelectedBoardMenu(this);
-			play.getSelectedBehaviorMenu(this);
+			play.setSelectedBoard(menuSelectedBoard);
+			play.setSelectedBehavior(menuSelectedBehavior);
+			play.setSelected(true);
+			dispose();
 		}
-	}
-	
-	
-	
-	public int getSelectedBoard() {
-		return selectedBoard;
-	}
-
-	public int getSelectedBehavior() {
-		return selectedBehavior;
 	}
 
 	/*public static void main(String[] args) {
