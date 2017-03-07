@@ -15,7 +15,7 @@ public class Play extends JFrame {
 
 	private int selectedBehavior;
 
-	private boolean areSelected = false;
+	private volatile boolean areSelected = false;
 
 	public int getSelectedBoard() {
 		return selectedBoard;

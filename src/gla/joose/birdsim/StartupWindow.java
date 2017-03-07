@@ -19,6 +19,9 @@ public class StartupWindow extends JFrame implements ActionListener {
 	private JComboBox<String> boardsBox;
 	private JComboBox<String> behaviorsBox;
 
+	private String[] boardsList;
+	private String[] behaviourList;
+
 	private JLabel title;
 	private JLabel chooseBoard;
 	private JLabel chooseFlying;
@@ -26,15 +29,13 @@ public class StartupWindow extends JFrame implements ActionListener {
 
 	private int menuSelectedBoard = 0;
 	private int menuSelectedBehavior = 0;
-	
+
 	private Play play;
-	
+
 	public StartupWindow(Play play) {
 		super("Bird Simulation - Choose settings");
-		//Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		//setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		this.play = play;
 
 		title = new JLabel("Choose a type of board and a bird behavior");
@@ -42,9 +43,11 @@ public class StartupWindow extends JFrame implements ActionListener {
 		sendButton = new JButton("Start the simulation!");
 		sendButton.addActionListener(this);
 
-		String[] boardsList = { "Flock board", "Static forage board", "Moving forage board" };
-		String[] behaviourList = { "Moving Forage, Birds die off and multiply", "No Forage, birds die off",
-				"Static Forage, birds multiply" };
+		boardsList = new String[] { "Flock board", "Static forage board", "Moving forage board" };
+		
+		behaviourList = new String[] { "No Forage", "No Forage, Birds Die", "Static Forage", "Static Forage, Birds Die",
+				"Static Forage, Birds Die and Multiply", "Moving Forage", "Moving Forage, Birds Multiply",
+				"Moving Forage, Birds Die and Multiply", };
 
 		chooseBoard = new JLabel("Choose type of board");
 		boardsBox = new JComboBox<>(boardsList);
@@ -81,9 +84,8 @@ public class StartupWindow extends JFrame implements ActionListener {
 		getContentPane().add(titleBox, BorderLayout.NORTH);
 		getContentPane().add(chooseBox, BorderLayout.CENTER);
 		getContentPane().add(sendData, BorderLayout.SOUTH);
-		// getContentPane().setPreferredSize(new Dimension(400, 200));
+
 		pack();
-		
 		setLocationRelativeTo(null);
 	}
 
@@ -97,14 +99,13 @@ public class StartupWindow extends JFrame implements ActionListener {
 
 		if (source == boardsBox) {
 			menuSelectedBoard = boardsBox.getSelectedIndex() + 1;
-			//String boardName = (String) boardsBox.getSelectedItem();
-			//System.out.println(boardName);
+			// String boardName = (String) boardsBox.getSelectedItem();
+			// System.out.println(boardName);
 		} else if (source == behaviorsBox) {
 			menuSelectedBehavior = behaviorsBox.getSelectedIndex() + 1;
-			//String behaviorName = (String) behaviorsBox.getSelectedItem();
-			//System.out.println(behaviorName);
+			// String behaviorName = (String) behaviorsBox.getSelectedItem();
+			// System.out.println(behaviorName);
 		} else if (source == sendButton) {
-			System.out.println("Sending info...");
 			play.setSelectedBoard(menuSelectedBoard);
 			play.setSelectedBehavior(menuSelectedBehavior);
 			play.setSelected(true);
@@ -112,14 +113,12 @@ public class StartupWindow extends JFrame implements ActionListener {
 		}
 	}
 
-	/*public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				new StartupWindow().setVisible(true);
-			}
-
-		});
-	}*/
+	/*
+	 * public static void main(String[] args) { SwingUtilities.invokeLater(new
+	 * Runnable() {
+	 * 
+	 * @Override public void run() { new StartupWindow().setVisible(true); }
+	 * 
+	 * }); }
+	 */
 }
