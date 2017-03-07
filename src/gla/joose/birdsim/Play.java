@@ -9,7 +9,7 @@ import gla.joose.birdsim.boards.*;
  * @author inah The main method for bootstrapping BirdSim.
  */
 public class Play extends JFrame {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	public static void printBoardChoices() {
@@ -42,12 +42,12 @@ public class Play extends JFrame {
 		}
 	}
 
-	public static Board chooseBoard(Scanner input) {
+	public static Board chooseBoard(int choice) {
 		// provide options for choosing the board
-		printBoardChoices();
-		int choice = input.nextInt();
+		//printBoardChoices();
+		//int choice = input.nextInt();
 		// we have three kinds of boards that we choose from
-		validateChoice(3, choice); 
+		//validateChoice(3, choice);
 
 		Board generalBoard = null;
 		switch (choice) {
@@ -64,11 +64,11 @@ public class Play extends JFrame {
 		return generalBoard;
 	}
 
-	public static void chooseBehaviour(Board generalBoard, Scanner input) {
-		printBehaviourChoices();
-		int choice = input.nextInt();
+	public static void chooseBehaviour(Board generalBoard, int choice) {
+		//printBehaviourChoices();
+		//int choice = input.nextInt();
 		// we have eight kinds of behaviors that we choose from
-		validateChoice(8, choice);
+		//validateChoice(8, choice);
 
 		switch (choice) {
 		case 1:
@@ -98,17 +98,33 @@ public class Play extends JFrame {
 		}
 	}
 
+	private int selectedBoard;
+	
+	public void getSelectedBoardMenu(StartupWindow sw) {
+		selectedBoard = sw.getSelectedBoard();
+	}
+	private int selectedBehavior;
+	
+	public void getSelectedBehaviorMenu(StartupWindow sw){
+		selectedBehavior = sw.getSelectedBehavior();
+	}
+
 	public static void main(String[] args) {
-		Scanner input = new Scanner(System.in);
-		/* choose the board type */
-		Board generalBoard = chooseBoard(input);
-		/* choose the birds' behavior */
-		chooseBehaviour(generalBoard, input);
-		/* close scanner, it is not needed anymore*/
-		input.close();
 		/* create a window for the game */
 		Play play = new Play();
-		/* initialize the grid and start the simulation*/
+		
+		StartupWindow sw = new StartupWindow(play);
+		sw.setVisible(true);
+
+		//Scanner input = new Scanner(System.in);
+		/* choose the board type */
+		Board generalBoard = chooseBoard(play.selectedBoard);
+		/* choose the birds' behavior */
+		chooseBehaviour(generalBoard, play.selectedBehavior);
+		/* close scanner, it is not needed anymore */
+		//input.close();
+
+		/* initialize the grid and start the simulation */
 		generalBoard.initBoard(play);
 	}
 
