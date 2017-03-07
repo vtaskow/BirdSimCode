@@ -11,9 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import flybehaviors.FlyBehavior;
-import flybehaviors.NoForage;
-
 /**
  * A BirdSim board with generic bird flying behavior.
  */
@@ -24,16 +21,13 @@ public class FlockBoard extends Board {
 	/* buttons for hatching and scaring birds */
 	JButton hatchEggButton;
 	JButton scareBirdsButton;
+	
 	/* displays current number of birds */
 	JLabel noOfBirdsLabel;
-
-	/* not a fucking clue why this is here */
-	//Thread runningthread;
 
 	/* set board's dimensions */
 	public FlockBoard(int rows, int columns) {
 		super(rows, columns);
-		flyBehavior = new NoForage(this);
 	}
 
 	@Override

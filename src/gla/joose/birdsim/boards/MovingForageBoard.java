@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import flybehaviors.MovingForage;
 import gla.joose.birdsim.pieces.Grain;
 
 /**
@@ -29,11 +28,9 @@ public class MovingForageBoard extends Board {
 	JLabel noOfGrainsLabel;
 	JLabel noOfBirdsLabel;
 
-	//Thread runningthread;
-
 	public MovingForageBoard(int rows, int columns) {
 		super(rows, columns);
-		flyBehavior = new MovingForage(this);
+		//flyBehavior = new MovingForage(this);
 	}
 
 	@Override

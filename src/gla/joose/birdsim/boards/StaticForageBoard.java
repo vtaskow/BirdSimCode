@@ -11,13 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import flybehaviors.NoForage;
-import flybehaviors.StaticForage;
-import gla.joose.birdsim.pieces.Bird;
 import gla.joose.birdsim.pieces.Grain;
-import gla.joose.birdsim.pieces.Piece;
-import gla.joose.birdsim.util.Distance;
-import gla.joose.birdsim.util.DistanceMgr;
 
 /**
  * A BirdSim board with where birds simultaneously fly and perch on static
@@ -40,12 +34,9 @@ public class StaticForageBoard extends Board {
 	/* number of grains and birds */
 	JLabel noOfGrainsLabel;
 	JLabel noOfBirdsLabel;
-
-	//Thread runningthread;
 	
 	public StaticForageBoard(int rows, int columns) {
 		super(rows, columns);
-		flyBehavior = new StaticForage(this);
 	}
 
 	@Override
