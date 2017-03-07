@@ -12,33 +12,33 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import flybehaviors.MovingForage;
-import flybehaviors.NoForage;
-import gla.joose.birdsim.pieces.Bird;
 import gla.joose.birdsim.pieces.Grain;
-import gla.joose.birdsim.pieces.Piece;
-import gla.joose.birdsim.util.Distance;
-import gla.joose.birdsim.util.DistanceMgr;
 
 /**
  * A BirdSim board with where birds simultaneously fly and perch on moving
  * grains.
  */
 public class MovingForageBoard extends Board {
-
+	/* panel for buttons */
 	JPanel buttonPanel;
+	
+	/* buttons for hatching and feeding birds */
 	JButton hatchEggButton;
 	JButton feedBirdButton;
+	
+	/* button and check for scaring birds */
 	JButton scareBirdsButton;
+	
+	/* button for starving and checking birds */
 	JButton starveBirdsButton;
 
+	/* number of grains and birds */
 	JLabel noOfGrainsLabel;
 	JLabel noOfBirdsLabel;
 
-	Thread runningthread;
-
 	public MovingForageBoard(int rows, int columns) {
 		super(rows, columns);
-		flyBehavior = new MovingForage(this);
+		flyBehavior = new MovingForage(this); // default flying behavior for this configuration board
 	}
 
 	@Override
@@ -50,20 +50,18 @@ public class MovingForageBoard extends Board {
 		buttonPanel = new JPanel();
 		frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
+		/* add a button for hatching new birds and an event listener to it so it creates birds when clicked on */
 		hatchEggButton = new JButton("hatch egg");
 		buttonPanel.add(hatchEggButton);
 		hatchEggButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scareBirds = false;
-				runningthread = new Thread(new Runnable() {
-					public void run() {
-						flyBehavior.fly();
-					}
-				});
-				runningthread.start();
+				createThread();
 			}
 		});
-
+		
+		/* add a button for feeding the birds and attach an event listener to it 
+		and create a new grain each time it is pressed */
 		feedBirdButton = new JButton("feed birds");
 		buttonPanel.add(feedBirdButton);
 		feedBirdButton.addActionListener(new ActionListener() {
@@ -80,6 +78,7 @@ public class MovingForageBoard extends Board {
 			}
 		});
 
+		/* add a button for starving the birds and attach an event listener to it */ 
 		starveBirdsButton = new JButton("starve birds");
 		buttonPanel.add(starveBirdsButton);
 		starveBirdsButton.addActionListener(new ActionListener() {
@@ -89,19 +88,21 @@ public class MovingForageBoard extends Board {
 			}
 		});
 
+		/* add a button for scaring the birds and attach an event listener to it */
 		scareBirdsButton = new JButton("scare birds");
 		buttonPanel.add(scareBirdsButton);
 		scareBirdsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scareBirds = true;
-
 			}
 		});
 		
+		/* show how many birds are on the screen */
 		noOfBirdsLabel = new JLabel();
 		noOfBirdsLabel.setText("#birds: " + 0);
 		buttonPanel.add(noOfBirdsLabel);
 
+		/* show how many grains are on the screen */
 		noOfGrainsLabel = new JLabel();
 		noOfGrainsLabel.setText("#grains: " + 0);
 		buttonPanel.add(noOfGrainsLabel);
@@ -109,11 +110,12 @@ public class MovingForageBoard extends Board {
 		// Implement window close box
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
+				/* scare the birds when user closes the window */
 				scareBirds = true;
-				if (runningthread != null) {
+				if (runningThread != null) {
 					clear();
 					try {
-						runningthread.join();
+						runningThread.join();
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}

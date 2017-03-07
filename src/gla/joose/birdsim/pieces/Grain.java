@@ -8,8 +8,6 @@ import java.awt.Rectangle;
  * A grain piece.
  */
 public class Grain extends Piece {
-	/* number of times birds fed from it */
-	// double perches = 0;
 	/* the remaining quantity of this grain piece */
 	private float remaining = 1.0f;
 
@@ -20,8 +18,7 @@ public class Grain extends Piece {
 	}
 
 	public void deplete() {
-		// perches++;
-		remaining -= 0.05f;
+		remaining -= 0.05f; // birds can feed from it 20 times
 	}
 
 	public float getRemaining() {

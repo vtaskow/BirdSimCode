@@ -30,6 +30,7 @@ public abstract class Board extends Observable implements Observer {
 	@SuppressWarnings("rawtypes")
 	/* grid made up of ArrayLists of ArrayLists */
 	private Vector[][] board;
+	
 	/* ArrayList to contain all the pieces */
 	public Vector<Piece> allPieces = new Vector<Piece>();
 	
@@ -48,14 +49,20 @@ public abstract class Board extends Observable implements Observer {
 
 	protected boolean panelHasBeenResized = false;
 
+	/* randomize the position of pieces*/
 	protected Random rand;
+	
+	/*  */
 	protected boolean scareBirds;
 	protected boolean starveBirds;
 
 	protected int noofbirds;
 	protected int noofgrains;
 	
+	/* every instance of this class will have a flying behaviour*/
 	FlyBehavior flyBehavior;
+	
+	Thread runningThread;
 
 	/**
 	 * Creates a board with the given number of rows and columns. This board is
@@ -100,10 +107,19 @@ public abstract class Board extends Observable implements Observer {
 		});
 	}
 	
+	// Getters and setters
+	
+	/**
+	 * Change the birds' flying behavior on the current configuration board
+	 * @param fb
+	 */
 	public void setFlyBehavior(FlyBehavior fb) {
 		flyBehavior = fb;
 	}
 	
+	/**
+	 * Trigger the flying behavior of a configuration, irrespective of underlying implementation 
+	 */
 	public void performFly() {
 		flyBehavior.fly();
 	}
@@ -122,6 +138,19 @@ public abstract class Board extends Observable implements Observer {
 	
 	public boolean areStarvedBirds() {
 		return starveBirds;
+	}
+	
+	/**
+	 * Pulled this block in a separate function, since every class that extends the board uses it.
+	 */
+	public void createThread() {
+		scareBirds = false;
+		runningThread = new Thread(new Runnable() {
+			public void run() {
+				performFly();					
+			}
+		});
+		runningThread.start();
 	}
 
 	/**

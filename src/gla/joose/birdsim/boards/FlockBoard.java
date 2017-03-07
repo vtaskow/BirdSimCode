@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import flybehaviors.FlyBehavior;
 import flybehaviors.NoForage;
 
 /**
@@ -24,21 +23,19 @@ public class FlockBoard extends Board {
 	/* buttons for hatching and scaring birds */
 	JButton hatchEggButton;
 	JButton scareBirdsButton;
+	
 	/* displays current number of birds */
 	JLabel noOfBirdsLabel;
-
-	/* not a fucking clue why this is here */
-	Thread runningthread;
 
 	/* set board's dimensions */
 	public FlockBoard(int rows, int columns) {
 		super(rows, columns);
-		flyBehavior = new NoForage(this);
+		flyBehavior = new NoForage(this); // default flying behavior for this configuration board
 	}
 
 	@Override
 	public void initBoard(final JFrame frame) {
-		/* get the main panel and put in in the window that contains the game */
+		/* get the main panel and put it in the window that contains the game */
 		JPanel display = getJPanel();
 		frame.getContentPane().add(display, BorderLayout.CENTER);
 
@@ -46,20 +43,16 @@ public class FlockBoard extends Board {
 		buttonPanel = new JPanel();
 		frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
+		/* add a button for hatching new birds and an event listener to it so it creates birds when clicked on */
 		hatchEggButton = new JButton("hatch egg");
 		buttonPanel.add(hatchEggButton);
 		hatchEggButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scareBirds = false;
-				runningthread = new Thread(new Runnable() {
-					public void run() {
-						flyBehavior.fly();						
-					}
-				});
-				runningthread.start();
+				createThread();
 			}
 		});
 
+		/* add a button for scaring the birds and attach an event listener to it*/
 		scareBirdsButton = new JButton("scare birds");
 		buttonPanel.add(scareBirdsButton);
 		scareBirdsButton.addActionListener(new ActionListener() {
@@ -68,6 +61,7 @@ public class FlockBoard extends Board {
 			}
 		});
 
+		/* show how many birds are on the screen */
 		noOfBirdsLabel = new JLabel();
 		noOfBirdsLabel.setText("#birds: " + 0);
 		buttonPanel.add(noOfBirdsLabel);
@@ -77,10 +71,10 @@ public class FlockBoard extends Board {
 			public void windowClosing(WindowEvent e) {
 				// used to invoke birds removal from the board
 				scareBirds = true;
-				if (runningthread != null) {
+				if (runningThread != null) {
 					clear();
 					try {
-						runningthread.join();
+						runningThread.join();
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}

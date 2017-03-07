@@ -7,10 +7,20 @@ import gla.joose.birdsim.pieces.Piece;
 import gla.joose.birdsim.util.Distance;
 import gla.joose.birdsim.util.DistanceMgr;
 
+/**
+ * This class implements a specific bird behavior.
+ * It needs to be associated with a Board instance so as to interact with it.
+ * Birds need to be places on new rectangles etc.
+ * 
+ * Irrespective of the board configuration, birds flying towards grains(if any, otherwise they
+ * fly randomly), and grains(if any) are static i.e. they do not move when a bird feeds from them.
+ *
+ */
 public class StaticForage implements FlyBehavior {
-	
+	/* association with a board configuration */
 	private Board board;
 	
+	/* constructor */
 	public StaticForage(Board board){
 		this.board = board;
 	}
@@ -21,7 +31,7 @@ public class StaticForage implements FlyBehavior {
 		Bird bird = new Bird();
 		
 		int randRow = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;
-		int randCol = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;/* add the bird to the board and the list of pieces which is in the Board class */
+		int randCol = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;
 		board.place(bird, randRow, randCol);
 		bird.setDraggable(false);
 		bird.setSpeed(20);

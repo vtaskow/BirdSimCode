@@ -1,21 +1,28 @@
 package flybehaviors;
 
-import java.util.Random;
-
 import gla.joose.birdsim.boards.Board;
 import gla.joose.birdsim.pieces.Bird;
 
+/**
+ * This class implements a specific bird behavior.
+ * It needs to be associated with a Board instance so as to interact with it.
+ * Birds need to be places on new rectangles etc.
+ * 
+ * Irrespective of the board configuration(even if there are grains), the birds
+ * do not fly towards and eat from the grains(if any). They just keep flying randomly.
+ *
+ */
 public class NoForage implements FlyBehavior {
+	/* association with a board configuration */
 	private Board board;
 
+	/* constructor */
 	public NoForage(Board board){
 		this.board = board;
 	}
 	
 	/**
-	 * Generic bird behaviour for any concrete board. This class is overridden
-	 * when a different board behaviour is preferred
-	 * 
+	 * Generic bird behavior for any concrete board. More details in class doc comment.
 	 */
 	@Override
 	public void fly() {
