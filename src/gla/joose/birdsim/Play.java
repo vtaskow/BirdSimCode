@@ -1,7 +1,5 @@
 package gla.joose.birdsim;
 
-import java.awt.geom.Area;
-import java.util.Scanner;
 import javax.swing.JFrame;
 import flybehaviors.*;
 import gla.joose.birdsim.boards.*;
@@ -13,43 +11,37 @@ public class Play extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	public static void printBoardChoices() {
-		System.out.println("Choose a board style:");
-		System.out.println("\t 1) Flockboard");
-		System.out.println("\t 2) StaticForageBoard");
-		System.out.println("\t 3) MovingForageBoard");
-		System.out.print("---> ");
+	private int selectedBoard;
+
+	private int selectedBehavior;
+
+	private boolean areSelected = false;
+
+	public int getSelectedBoard() {
+		return selectedBoard;
 	}
 
-	public static void printBehaviourChoices() {
-		System.out.println("Choose a bird behaviour:");
-
-		System.out.println("\t 1) No Forage");
-		System.out.println("\t 2) No Forage, Birds Die");
-
-		System.out.println("\t 3) Static Forage");
-		System.out.println("\t 4) Static Forage, Birds Die");
-		System.out.println("\t 5) Static Forage, Birds Die and Multiply");
-
-		System.out.println("\t 6) Moving Forage");
-		System.out.println("\t 7) Moving Forage, Birds Multiply");
-		System.out.println("\t 8) Moving Forage, Birds Die and Multiply");
-		System.out.print("---> ");
+	public int getSelectedBehavior() {
+		return selectedBehavior;
 	}
 
-	public static void validateChoice(int limit, int choice) {
-		if (!(choice <= limit && choice > 0)) {
-			throw new IllegalArgumentException("Invalid choice!");
-		}
+	public void setSelectedBoard(int selectedBoard) {
+		this.selectedBoard = selectedBoard;
+	}
+
+	public void setSelectedBehavior(int selectedBehavior) {
+		this.selectedBehavior = selectedBehavior;
+	}
+
+	public void setSelected(boolean value) {
+		areSelected = value;
+	}
+
+	public boolean isSelected() {
+		return areSelected;
 	}
 
 	public static Board chooseBoard(int choice) {
-		// provide options for choosing the board
-		//printBoardChoices();
-		//int choice = input.nextInt();
-		// we have three kinds of boards that we choose from
-		//validateChoice(3, choice);
-
 		Board generalBoard = null;
 		switch (choice) {
 		case 1:
@@ -66,11 +58,6 @@ public class Play extends JFrame {
 	}
 
 	public static void chooseBehaviour(Board generalBoard, int choice) {
-		//printBehaviourChoices();
-		//int choice = input.nextInt();
-		// we have eight kinds of behaviors that we choose from
-		//validateChoice(8, choice);
-
 		switch (choice) {
 		case 1:
 			generalBoard.setFlyBehavior(new NoForage(generalBoard));
@@ -99,55 +86,21 @@ public class Play extends JFrame {
 		}
 	}
 
-	private int selectedBoard;
-	
-	
-	private int selectedBehavior;
-
-	public int getSelectedBoard() {
-		return selectedBoard;
-	}
-
-	public void setSelectedBoard(int selectedBoard) {
-		this.selectedBoard = selectedBoard;
-	}
-
-	public int getSelectedBehavior() {
-		return selectedBehavior;
-	}
-
-	public void setSelectedBehavior(int selectedBehavior) {
-		this.selectedBehavior = selectedBehavior;
-	}
-
-	private boolean areSelected = false;
-	
-	public void setSelected(boolean value){
-		areSelected = value;
-	}
-
 	public static void main(String[] args) {
 		/* create a window for the game */
 		Play play = new Play();
-		
+
 		StartupWindow sw = new StartupWindow(play);
 		sw.setVisible(true);
-		
-		while(!play.areSelected){
-			System.out.println("adasdas");
-		}
-		System.out.println("OUT");
-		/*StartupWindow sw = new StartupWindow(play);
-		sw.setVisible(true);*/
 
-		//Scanner input = new Scanner(System.in);
+		while (!play.isSelected()) {
+		}
 
 		/* choose the board type */
 		Board generalBoard = chooseBoard(play.getSelectedBoard());
+
 		/* choose the birds' behavior */
 		chooseBehaviour(generalBoard, play.getSelectedBehavior());
-		/* close scanner, it is not needed anymore */
-		//input.close();
 
 		/* initialize the grid and start the simulation */
 		generalBoard.initBoard(play);
