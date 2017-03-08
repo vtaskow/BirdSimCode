@@ -48,12 +48,11 @@ public class Play extends JFrame {
 	}
 
 	/**
-	 * Set the board configuration.
+	 * Choose and initialize the board type from several options.
 	 * @param choice
 	 * @return Board instances
 	 */
 	public static Board chooseBoard(int choice) {
-		// boards can be resized, so we are not constraint by their sizes
 		Board generalBoard = null;
 		switch (choice) {
 		case 1:
@@ -70,7 +69,7 @@ public class Play extends JFrame {
 	}
 
 	/**
-	 * Set the flying behavior to the Board instance 
+	 * Choose and set the flying behavior to the Board instance from several options. 
 	 * @param generalBoard
 	 * @param choice
 	 */
@@ -113,7 +112,7 @@ public class Play extends JFrame {
 
 		/* check continuously if the user has chosen the board and the 
 		behavior - if so, launch simulation */
-		// a better way to do this would be with using concurrent techniques such as countdownlatches 
+		// a better way to do this would be with using concurrent techniques such as countdownlatches but this is too advanced
 		while (!play.isSelected()) {
 		}
 
