@@ -40,23 +40,33 @@ public abstract class Board extends Observable implements Observer {
 	private int rows;
 	private int columns;
 
+	/* default speed on pieces on the board */
 	private int defaultSpeed = 5;
+	
+	/* an instance of itself */
 	private Board thisBoard;
 
 	/* Swing container for board */
 	private JPanel display;
 
+	/* monitor the JFrame, so as to resize grid and pieces on it */
 	protected boolean panelHasBeenResized = false;
 
+	/* randomize the position of pieces*/
 	protected Random rand;
+	
+	/* for listening if any of the buttons associated are pressed */
 	protected boolean scareBirds;
 	protected boolean starveBirds;
 
+	/* count the number of pieces on the board */
 	protected int noofbirds;
 	protected int noofgrains;
 	
+	/* every concrete board has an associated bird flying behavior */
 	FlyBehavior flyBehavior;
 	
+	/* for creating new birds */
 	Thread runningThread;
 	
 	/**
@@ -101,11 +111,19 @@ public abstract class Board extends Observable implements Observer {
 			}
 		});
 	}
+	// Getters and setters
 	
+	/**
+	* Change the birds' flying behavior on the current configuration board
+	* @param fb
+	*/
 	public void setFlyBehavior(FlyBehavior fb) {
 		flyBehavior = fb;
 	}
 	
+	/**
+	 * Trigger the flying behavior of a configuration, irrespective of underlying implementation 
+	 */
 	public void performFly() {
 		flyBehavior.fly();
 	}
@@ -126,6 +144,9 @@ public abstract class Board extends Observable implements Observer {
 		return starveBirds;
 	}
 	
+	/**
+	 * Pulled this block in a separate function, since every class that extends the board uses it.
+	 */
 	public void createThread() {
 		scareBirds = false;
 		runningThread = new Thread(new Runnable() {

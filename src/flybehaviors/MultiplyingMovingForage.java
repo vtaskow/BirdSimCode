@@ -9,9 +9,20 @@ import gla.joose.birdsim.pieces.Piece;
 import gla.joose.birdsim.util.Distance;
 import gla.joose.birdsim.util.DistanceMgr;
 
+/**
+ * This class implements a specific bird behavior.
+ * It needs to be associated with a Board instance so as to interact with it.
+ * Birds need to be places on new rectangles etc.
+ * 
+ * Irrespective of the board configuration, birds flying towards grains(if any, otherwise they
+ * fly randomly), and grains(if any) are moving i.e. they move when a bird feeds from them.
+ * Also, birds multiply if they feed from grains.
+ */
 public class MultiplyingMovingForage implements FlyBehavior {
+	/* association with a board configuration */
 	private Board board;
 	
+	/* constructor */
 	public MultiplyingMovingForage(Board board){
 		this.board = board;
 	}
@@ -93,6 +104,8 @@ public class MultiplyingMovingForage implements FlyBehavior {
 							// bingo -food found (eat and move away)
 							Grain grain = (Grain) d.getTargetpiece();
 							grain.deplete();
+
+							/* create a new bird because a bird just ate from a grain */
 							board.createThread();
 
 							int randRowf = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;
@@ -156,6 +169,8 @@ public class MultiplyingMovingForage implements FlyBehavior {
 							// bingo -food found (eat and move away)
 							Grain grain = (Grain) d.getTargetpiece();
 							grain.deplete();
+
+							/* create a new bird because a bird just ate from a grain */
 							board.createThread();
 
 							int randRowf = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;

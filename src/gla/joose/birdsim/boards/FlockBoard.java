@@ -12,7 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * A BirdSim board with generic bird flying behavior.
+ * A BirdSim board with buttons for creating birds and scaring birds.
+ * The flying behavior is determined by the user during runtime.
  */
 public class FlockBoard extends Board {
 	/* container for buttons and labels */
@@ -25,7 +26,7 @@ public class FlockBoard extends Board {
 	/* displays current number of birds */
 	JLabel noOfBirdsLabel;
 
-	/* set board's dimensions */
+	/* constructor - set board's dimensions */
 	public FlockBoard(int rows, int columns) {
 		super(rows, columns);
 	}
@@ -40,6 +41,7 @@ public class FlockBoard extends Board {
 		buttonPanel = new JPanel();
 		frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
+		/* add a button for hatching new birds and an event listener to it so it creates birds when clicked on */
 		hatchEggButton = new JButton("hatch egg");
 		buttonPanel.add(hatchEggButton);
 		hatchEggButton.addActionListener(new ActionListener() {
@@ -48,6 +50,7 @@ public class FlockBoard extends Board {
 			}
 		});
 
+		/* add a button for scaring the birds and attach an event listener to it*/
 		scareBirdsButton = new JButton("scare birds");
 		buttonPanel.add(scareBirdsButton);
 		scareBirdsButton.addActionListener(new ActionListener() {
@@ -56,6 +59,7 @@ public class FlockBoard extends Board {
 			}
 		});
 
+		/* show how many birds are on the screen */
 		noOfBirdsLabel = new JLabel();
 		noOfBirdsLabel.setText("#birds: " + 0);
 		buttonPanel.add(noOfBirdsLabel);
