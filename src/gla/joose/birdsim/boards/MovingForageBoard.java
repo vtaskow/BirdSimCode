@@ -16,7 +16,7 @@ import gla.joose.birdsim.pieces.Grain;
 
 /**
  * A BirdSim board with where birds simultaneously fly and perch on moving
- * grains.
+ * grains. The birds' behavior can be changed by setting another.
  */
 public class MovingForageBoard extends Board {
 	/* panel for buttons */
@@ -55,7 +55,6 @@ public class MovingForageBoard extends Board {
 		buttonPanel.add(hatchEggButton);
 		hatchEggButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scareBirds = false;
 				createThread();
 			}
 		});
