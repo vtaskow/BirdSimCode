@@ -114,6 +114,12 @@ public class Play extends JFrame {
 		behavior - if so, launch simulation */
 		// a better way to do this would be with using concurrent techniques such as countdownlatches but this is too advanced
 		while (!play.isSelected()) {
+			/* sleep the thread/while loop, so it does not consume so much CPU resources */
+			try {
+				Thread.sleep(50);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		/* choose the board type */
