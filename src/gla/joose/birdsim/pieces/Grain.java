@@ -18,7 +18,7 @@ public class Grain extends Piece {
 	}
 
 	public void deplete() {
-		remaining -= 0.05f;
+		remaining -= 0.05f; // a grains is depleted after 20 times of eating
 	}
 
 	public float getRemaining() {

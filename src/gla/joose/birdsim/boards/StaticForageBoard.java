@@ -14,8 +14,9 @@ import javax.swing.JPanel;
 import gla.joose.birdsim.pieces.Grain;
 
 /**
- * A BirdSim board with where birds simultaneously fly and perch on static
- * grains.
+ * A BirdSim board with buttons for creating and scaring birds, and 
+ * creating and removing grains. 
+ * The flying behavior of the birds is determined during runtime.
  */
 public class StaticForageBoard extends Board {
 	/* panel for buttons */

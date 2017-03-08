@@ -7,10 +7,20 @@ import gla.joose.birdsim.pieces.*;
 import gla.joose.birdsim.util.Distance;
 import gla.joose.birdsim.util.DistanceMgr;
 
+/**
+ * This class implements a specific bird behavior.
+ * It needs to be associated with a Board instance so as to interact with it.
+ * Birds need to be places on new rectangles etc.
+ * 
+ * Irrespective of the board configuration, birds flying towards grains(if any, otherwise they
+ * fly randomly), and grains(if any) are static i.e. they do not move when a bird feeds from them.
+ * Also, birds die off after time if there are no grains on the board for too long.
+ */
 public class DyingStaticForage implements FlyBehavior {
-
+	/* association with a board configuration */
 	private Board board;
 	
+	/* constructor */
 	public DyingStaticForage(Board board){
 		this.board = board;
 	}
@@ -27,7 +37,10 @@ public class DyingStaticForage implements FlyBehavior {
 		bird.setSpeed(20);
 		board.updateStockDisplay();
 		
-		Integer timer = new Integer(10);
+		/* set up a timer of 10 iterations = 10 bird movements and if becomes zero
+		 * that means the birds were left with no grain to feed themselves from, so 
+		 * they start to die off */
+		Integer timer = new Integer(10); // Integer is used due to changing value by reference
 		
 		while (!board.areScaredBirds()) {
 			
@@ -35,6 +48,7 @@ public class DyingStaticForage implements FlyBehavior {
 			int current_row = bird.getRow();
 			int current_col = bird.getColumn();
 
+			/* count the number of grains to determine if the timer needs to be decremented */
 			synchronized (board.allPieces) {
 				int grains = 0;
 				for (int i = 0; i < board.getAllPieces().size(); i++) {
@@ -52,10 +66,12 @@ public class DyingStaticForage implements FlyBehavior {
 						dmgr.addDistance(d);
 					}
 				}
+				/* if there are no grains, timer gets decremented */
 				if (grains < 1) {
 					timer--;
 				}
 			}
+			/* birds were left too long without food, so they die off */
 			if (timer < 0) {
 				break;
 			}
@@ -101,6 +117,10 @@ public class DyingStaticForage implements FlyBehavior {
 							// bingo -food found (eat and move away)
 							Grain grain = (Grain) d.getTargetpiece();
 							grain.deplete();
+							
+							/* birds remain on the board and do not die off yet */
+							/* extend their life after they eat */
+							timer++;
 
 							if (board.areStarvedBirds()) {
 								grain.remove();
@@ -159,6 +179,10 @@ public class DyingStaticForage implements FlyBehavior {
 							Grain grain = (Grain) d.getTargetpiece();
 							grain.deplete();
 
+							/* birds remain on the board and do not die off yet */
+							/* extend their life after they eat */
+							timer++;
+							
 							if (board.areStarvedBirds()) {
 								grain.remove();
 								board.updateStockDisplay();

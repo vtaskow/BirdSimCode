@@ -9,10 +9,21 @@ import gla.joose.birdsim.pieces.Piece;
 import gla.joose.birdsim.util.Distance;
 import gla.joose.birdsim.util.DistanceMgr;
 
+/**
+ * This class implements a specific bird behavior.
+ * It needs to be associated with a Board instance so as to interact with it.
+ * Birds need to be places on new rectangles etc.
+ * 
+ * Irrespective of the board configuration, birds flying towards grains(if any, otherwise they
+ * fly randomly), and grains(if any) are static i.e. they do not move when a bird feeds from them.
+ * Also, birds die off after time if there are no grains on the board, and they multiply if
+ * they feed from grains.
+ */
 public class DyingMultiplyingStaticForage implements FlyBehavior {
-
+	/* association with a board configuration */
 	private Board board;
 	
+	/* constructor */
 	public DyingMultiplyingStaticForage(Board board){
 		this.board = board;
 	}
@@ -20,7 +31,7 @@ public class DyingMultiplyingStaticForage implements FlyBehavior {
 	@Override
 	public void fly() {
 		
-		Bird bird = new Bird(Color.lightGray);
+		Bird bird = new Bird(Color.MAGENTA);
 		
 		int randRow = board.getRand().nextInt((board.getRows() - 3) + 1) + 0;
 		int randCol = board.getRand().nextInt((board.getColumns() - 3) + 1) + 0;/* add the bird to the board and the list of pieces which is in the Board class */
@@ -29,7 +40,10 @@ public class DyingMultiplyingStaticForage implements FlyBehavior {
 		bird.setSpeed(20);
 		board.updateStockDisplay();
 
-		Integer timer = new Integer(10);
+		/* set up a timer of 10 iterations = 10 bird movements and if becomes zero
+		 * that means the birds were left with no grain to feed themselves from, so 
+		 * they start to die off */
+		Integer timer = new Integer(10); // Integer is used due to changing value by reference
 		
 		while (!board.areScaredBirds()) {
 			
@@ -37,6 +51,7 @@ public class DyingMultiplyingStaticForage implements FlyBehavior {
 			int current_row = bird.getRow();
 			int current_col = bird.getColumn();
 
+			/* count the number of grains to determine if the timer needs to be decremented */
 			synchronized (board.allPieces) {
 				int grains = 0;
 				for (int i = 0; i < board.getAllPieces().size(); i++) {
@@ -54,10 +69,12 @@ public class DyingMultiplyingStaticForage implements FlyBehavior {
 						dmgr.addDistance(d);
 					}
 				}
+				/* if there are no grains, timer gets decremented */
 				if (grains < 1) {
 					timer--;
 				}
 			}
+			/* birds were left too long without food, so they die off */
 			if (timer < 0) {
 				break;
 			}
@@ -103,7 +120,10 @@ public class DyingMultiplyingStaticForage implements FlyBehavior {
 							// bingo -food found (eat and move away)
 							Grain grain = (Grain) d.getTargetpiece();
 							grain.deplete();
+
+							/* birds remain on the board and do not die off yet */
 							timer++;
+							/* create a new bird because a bird just ate from a grain */
 							board.createThread();
 							
 							if (board.areStarvedBirds()) {
@@ -162,7 +182,10 @@ public class DyingMultiplyingStaticForage implements FlyBehavior {
 							// bingo -food found (eat and move away)
 							Grain grain = (Grain) d.getTargetpiece();
 							grain.deplete();
+
+							/* birds remain on the board and do not die off yet */
 							timer++;
+							/* create a new bird because a bird just ate from a grain */
 							board.createThread();
 							
 							if (board.areStarvedBirds()) {

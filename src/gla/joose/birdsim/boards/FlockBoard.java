@@ -12,7 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * A BirdSim board with generic bird flying behavior.
+ * A BirdSim board with buttons for creating birds and scaring birds.
+ * The flying behavior is determined by the user during runtime.
  */
 public class FlockBoard extends Board {
 	/* container for buttons and labels */
