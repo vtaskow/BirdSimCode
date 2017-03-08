@@ -40,6 +40,7 @@ public class StartupWindow extends JFrame implements ActionListener {
 	/* a simulation associated with it */
 	private Play play;
 
+	/* constructor - takes a simulation instance */
 	public StartupWindow(Play play) {
 		super("Bird Simulation - Choose settings");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -124,6 +125,8 @@ public class StartupWindow extends JFrame implements ActionListener {
 			play.setSelectedBoard(menuSelectedBoard);
 			play.setSelectedBehavior(menuSelectedBehavior);
 			play.setSelected(true);
+			
+			/* close the current JFrame */
 			dispose();
 		}
 	}

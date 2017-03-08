@@ -18,19 +18,24 @@ import gla.joose.birdsim.pieces.Grain;
  * grains.
  */
 public class MovingForageBoard extends Board {
-
+	/* panel for buttons */
 	JPanel buttonPanel;
+	
+	/* buttons for hatching and feeding birds */
 	JButton hatchEggButton;
 	JButton feedBirdButton;
+	
+	/* button for scaring and starving birds */
 	JButton scareBirdsButton;
 	JButton starveBirdsButton;
 
+	/* number of grains and birds */
 	JLabel noOfGrainsLabel;
 	JLabel noOfBirdsLabel;
 
+	/* constructor - set board's dimensions */
 	public MovingForageBoard(int rows, int columns) {
 		super(rows, columns);
-		//flyBehavior = new MovingForage(this);
 	}
 
 	@Override
@@ -42,6 +47,7 @@ public class MovingForageBoard extends Board {
 		buttonPanel = new JPanel();
 		frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
+		/* add a button for hatching new birds and an event listener to it so it creates birds when clicked on */
 		hatchEggButton = new JButton("hatch egg");
 		buttonPanel.add(hatchEggButton);
 		hatchEggButton.addActionListener(new ActionListener() {
@@ -50,6 +56,8 @@ public class MovingForageBoard extends Board {
 			}
 		});
 
+		/* add a button for feeding the birds and attach an event listener to it 
+		and create a new grain each time it is pressed */
 		feedBirdButton = new JButton("feed birds");
 		buttonPanel.add(feedBirdButton);
 		feedBirdButton.addActionListener(new ActionListener() {
@@ -66,6 +74,7 @@ public class MovingForageBoard extends Board {
 			}
 		});
 
+		/* add a button for starving the birds and attach an event listener to it */ 
 		starveBirdsButton = new JButton("starve birds");
 		buttonPanel.add(starveBirdsButton);
 		starveBirdsButton.addActionListener(new ActionListener() {
@@ -75,6 +84,7 @@ public class MovingForageBoard extends Board {
 			}
 		});
 
+		/* add a button for scaring the birds and attach an event listener to it */
 		scareBirdsButton = new JButton("scare birds");
 		buttonPanel.add(scareBirdsButton);
 		scareBirdsButton.addActionListener(new ActionListener() {
@@ -84,10 +94,12 @@ public class MovingForageBoard extends Board {
 			}
 		});
 		
+		/* show how many birds are on the screen */
 		noOfBirdsLabel = new JLabel();
 		noOfBirdsLabel.setText("#birds: " + 0);
 		buttonPanel.add(noOfBirdsLabel);
 
+		/* show how many grains are on the screen */
 		noOfGrainsLabel = new JLabel();
 		noOfGrainsLabel.setText("#grains: " + 0);
 		buttonPanel.add(noOfGrainsLabel);

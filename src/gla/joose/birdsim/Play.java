@@ -8,15 +8,21 @@ import gla.joose.birdsim.boards.*;
  * @author inah The main method for bootstrapping BirdSim.
  */
 public class Play extends JFrame {
+	
+	private static final long serialVersionUID = 8257593412667660991L;
 
-	private static final long serialVersionUID = 1L;
-
+	/* contain currently chosen board and behavior */
 	private int selectedBoard;
-
 	private int selectedBehavior;
 
+	/* for checking if menu window has been closed and choices have been updated */
+	/* volatile because a thread may not see the value being changed for a long time
+	 * because of caching, thus, ensure the value is always synchronized between threads
+	 * and all reads and writes of it will go to main memory */
 	private volatile boolean areSelected = false;
 
+	// Getters and setters
+	
 	public int getSelectedBoard() {
 		return selectedBoard;
 	}
@@ -41,7 +47,13 @@ public class Play extends JFrame {
 		return areSelected;
 	}
 
+	/**
+	 * Set the board configuration.
+	 * @param choice
+	 * @return Board instances
+	 */
 	public static Board chooseBoard(int choice) {
+		// boards can be resized, so we are not constraint by their sizes
 		Board generalBoard = null;
 		switch (choice) {
 		case 1:
@@ -57,6 +69,11 @@ public class Play extends JFrame {
 		return generalBoard;
 	}
 
+	/**
+	 * Set the flying behavior to the Board instance 
+	 * @param generalBoard
+	 * @param choice
+	 */
 	public static void chooseBehaviour(Board generalBoard, int choice) {
 		switch (choice) {
 		case 1:
@@ -90,9 +107,13 @@ public class Play extends JFrame {
 		/* create a window for the game */
 		Play play = new Play();
 
+		/* start the menu for choosing a board and a behavior */
 		StartupWindow sw = new StartupWindow(play);
 		sw.setVisible(true);
 
+		/* check continuously if the user has chosen the board and the 
+		behavior - if so, launch simulation */
+		// a better way to do this would be with using concurrent techniques such as countdownlatches 
 		while (!play.isSelected()) {
 		}
 
