@@ -5,7 +5,8 @@ The initial design of BirdSim used inheritance to model most of its behaviour. T
 ```
 1. Master branch contains the improved design using the aforementioned design pattern.
 2. life_and_death branch contains additional flying behaviours of the birds.
-3. gui_choice branch contains the code from life_and_death branch and an additional helped window implemented with Swing that facilitates the user to choose a board type and a flying behaviour of the birds.
+3. gui_choice branch contains the code from life_and_death branch and an additional helped window 
+implemented with Swing that facilitates the user to choose a board type and a flying behaviour of the birds.
 ```
 ## How to run it
 Currently, one the GUI_choice branch contains an executable .jar file. The other branches can be run by cloning the repository and launching the Play.java file.
